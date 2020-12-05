@@ -49,8 +49,8 @@ def parse_filename(file_path):
         flt = int(fields[1])
         dep = fields[2]
         summary = {'flt': flt,
-                'date': date,
-                'dep': dep}
+                   'date': date,
+                   'dep': dep}
         return summary
     except (IndexError, ValueError, TypeError):
         logger.error(f'{filename}; Incorrect filename ')
