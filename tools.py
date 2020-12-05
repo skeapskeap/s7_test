@@ -47,7 +47,7 @@ def init_dirs(*args):
 def save_json(json_data, filename):
     try:
         json_filename = filename.split('/')[-1].replace('.csv', '.json')
-        with open(dirs.OUTPUT_DIR + filename, 'w') as file:
+        with open(dirs.OUTPUT_DIR + json_filename, 'w') as file:
             file.write(json_data)
     except FileNotFoundError:
         logger.info(f"{filename}; Can't save json file")
