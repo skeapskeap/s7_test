@@ -29,7 +29,9 @@ class FLT(Base):
 def init_db():
     try:
         Base.metadata.create_all(bind=engine)
+        logger.info('Init DB - OK')
     except OperationalError:
+        logger.info('Init DB - Error')
         raise MyLocalException
 
 
@@ -58,7 +60,7 @@ def save_to_db(json_data):
                 depdate=depdate,
                 dep=dep)
         session.commit()
-        logger.info('Commit to DB success')
+        logger.info('Commit to DB - OK')
     except OperationalError:
-        logger.error('Commit to DB failed')
+        logger.error('Commit to DB - Error')
         raise MyLocalException

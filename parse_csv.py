@@ -12,10 +12,10 @@ def make_json(file_path: str):
         passengers = make_dict(df)
         flt['prl'] = passengers
         json_data = json.dumps(flt)
-        logger.info(f'{filename}; Convert  to json success')
+        logger.info(f'{filename}; Convert to json - OK')
         return json_data
     except (AttributeError, TypeError):
-        logger.error(f'{filename}; Convert  to json failed')
+        logger.error(f'{filename}; Convert to json - Error')
         raise MyLocalException
     
 

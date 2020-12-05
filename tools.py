@@ -17,7 +17,7 @@ def check_input_dir():
             files = [item.name for item in content
                         if item.is_file()]
             for file in files:
-                logger.info(f'{file}; New file  detected in input directory')
+                logger.info(f'{file}; New file detected in input directory')
         return files
     except FileNotFoundError:
         logger.info(f"Can't open input directory")
@@ -29,7 +29,7 @@ def move_input_file(file: str, new_dir: str):
         src = f'{dirs.INPUT_DIR}{file}'
         dst = f'{new_dir}{file}'
         shutil.move(src, dst)
-        logger.info(f'{file}; File  moved to {new_dir}')
+        logger.info(f'{file}; File moved to {new_dir}')
     except FileNotFoundError:
         logger.info(f"{file}; Can't move input file")
         raise MyLocalException
@@ -39,7 +39,7 @@ def init_dirs(*args):
     for directory in args:
         try:
             os.mkdir(directory)
-            logger.info(f'Create {directory}')
+            logger.info(f'Create {directory} - OK')
         except FileExistsError:
             pass
 

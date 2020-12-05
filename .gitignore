@@ -2,3 +2,8 @@ __pycache__/
 .env
 *.csv
 *.db
+.DS_Store
+In/
+Out/
+Ok/
+Err/
