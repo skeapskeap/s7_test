@@ -1,10 +1,11 @@
+from datetime import datetime as dt
 from sqlalchemy import create_engine, Column, String, Integer, Date
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from datetime import datetime as dt
-import json
 from tools import logger, MyLocalException
+import json
+
 
 Base = declarative_base()
 engine = create_engine('sqlite:///flights.db', echo=False)
