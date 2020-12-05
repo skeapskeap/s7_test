@@ -5,6 +5,10 @@ import json
 
 
 def make_json(file_path: str):
+    '''
+    Expects abspath to .csv file
+    Returns json data
+    '''
     flt = parse_filename(file_path)
     df = make_df(file_path)
     filename = file_path.split('/')[-1]
@@ -20,6 +24,10 @@ def make_json(file_path: str):
     
 
 def make_df(file_path: str):
+    '''
+    Expects abspath to .csv file
+    Returns pandas DataFrame
+    '''
     filename = file_path.split('/')[-1]
     try:
         df = pd.read_csv(
@@ -42,13 +50,22 @@ def make_df(file_path: str):
         raise MyLocalException
 
 
-def make_dict(df):
+def make_dict(df) -> dict:
+    '''
+    Expects pandas DataFrame
+    Returns python dict
+    '''
     json_data = df.to_json(orient="table", index=False)
     dict_data = json.loads(json_data)['data']
     return dict_data
 
 
 def parse_filename(file_path: str) -> dict:
+    '''
+    Expects abspath to .csv file
+    Parse .csv filename and put result to dict
+    Returns python dict
+    '''
     try:
         filename = file_path.split('/')[-1]
         fields = filename.replace('.csv', '').split('_')

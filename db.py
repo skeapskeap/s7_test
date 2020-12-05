@@ -27,6 +27,10 @@ class FLT(Base):
 
 
 def init_db():
+    '''
+    Crete db with table 'flt'
+    Or do nothing if they exist
+    '''
     try:
         Base.metadata.create_all(bind=engine)
         logger.info('Init DB - OK')
@@ -36,6 +40,10 @@ def init_db():
 
 
 def insert(**kwargs):
+    '''
+    Expects DB fields as kwargs
+    Flush changes to session
+    '''
     new_record = FLT(**kwargs)
     try:
         session.add(new_record)
@@ -46,6 +54,11 @@ def insert(**kwargs):
 
 
 def save_to_db(json_data):
+    '''
+    Parse json to DB fields
+    Put them to session with insert()
+    Commit changes
+    '''
     data = json.loads(json_data)
     flt=data['flt']
     depdate=data['date']

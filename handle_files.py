@@ -10,7 +10,6 @@ import shutil
 import sys
 import tools
 
-
 arg_parser = argparse.ArgumentParser(
             description='python handle_files.py -i <POLL_INTERVAL_SECONDS>')
 arg_parser.add_argument('-i', '--interval', nargs='?', default=10, type=int)
@@ -19,6 +18,9 @@ POLL_INTERVAL = args.interval
 
 
 def main_pipeline():
+    '''
+    Base logic here
+    '''
     new_files = tools.check_input_dir()
     for file in new_files:
         try:
@@ -30,6 +32,9 @@ def main_pipeline():
             tools.move_input_file(file, dirs.ERR_DIR)
 
 def init():
+    '''
+    Init db and create default directories
+    '''
     init_db()
     tools.init_dirs(
         dirs.INPUT_DIR,
@@ -47,7 +52,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         raise KeyboardInterrupt
     except tools.MyLocalException:
-        tools.logger.error('Error while initialising') 
-
-    
-
+        tools.logger.error('Error while initialising')
