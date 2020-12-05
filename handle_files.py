@@ -11,10 +11,10 @@ import sys
 import tools
 
 
-parser = argparse.ArgumentParser(
-    description='python handle_files.py -i <POLL_INTERVAL_SECONDS>')
-parser.add_argument('-i', '--interval', nargs='?', default=10, type=int)
-args = parser.parse_args(sys.argv[1:])
+arg_parser = argparse.ArgumentParser(
+            description='python handle_files.py -i <POLL_INTERVAL_SECONDS>')
+arg_parser.add_argument('-i', '--interval', nargs='?', default=10, type=int)
+args = arg_parser.parse_args(sys.argv[1:])
 POLL_INTERVAL = args.interval
 
 
@@ -36,7 +36,6 @@ def init():
         dirs.OK_DIR,
         dirs.ERR_DIR,
         dirs.OUTPUT_DIR)
-
 
 
 if __name__ == '__main__':

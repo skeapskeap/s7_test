@@ -20,18 +20,27 @@ def make_json(file_path: str):
     
 
 def make_df(file_path: str):
+    filename = file_path.split('/')[-1]
     try:
         df = pd.read_csv(
             open(file_path, 'r'),
             sep=';',
-            header=0,
-            )
+            header=0)
         df = df.applymap(str)
-        return df
+
+        if not df.empty:
+            return df
+        logger.error(f"{filename}; Empty table")
+        raise MyLocalException
+
     except FileNotFoundError:
         logger.error(f"{file_path}; Can't open file ")
         raise MyLocalException
-        
+
+    except pd.errors.EmptyDataError:
+        logger.error(f"{filename}; Incorrect .csv ")
+        raise MyLocalException
+
 
 def make_dict(df):
     json_data = df.to_json(orient="table", index=False)
@@ -39,7 +48,7 @@ def make_dict(df):
     return dict_data
 
 
-def parse_filename(file_path):
+def parse_filename(file_path: str) -> dict:
     try:
         filename = file_path.split('/')[-1]
         fields = filename.replace('.csv', '').split('_')
@@ -55,4 +64,3 @@ def parse_filename(file_path):
     except (IndexError, ValueError, TypeError):
         logger.error(f'{filename}; Incorrect filename ')
         raise MyLocalException
-    
