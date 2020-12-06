@@ -1,12 +1,9 @@
 
 from db import save_to_db, init_db
-from parse_csv import make_json
+from parse_csv import Parser
 from time import sleep
 import argparse
 import dirs
-import logging
-import os
-import shutil
 import sys
 import tools
 
@@ -22,14 +19,16 @@ def main_pipeline():
     Base logic here
     '''
     new_files = tools.check_input_dir()
-    for file in new_files:
+    for file_name in new_files:
+        p = Parser(dirs.INPUT_DIR + file_name)
         try:
-            json_data = make_json(dirs.INPUT_DIR + file)
-            tools.save_json(json_data, file)
+            json_data = p.make_json()
+            tools.save_json(json_data, file_name)
             save_to_db(json_data)
-            tools.move_input_file(file, dirs.OK_DIR)
+            tools.move_input_file(file_name, dirs.OK_DIR)
         except tools.MyLocalException:
-            tools.move_input_file(file, dirs.ERR_DIR)
+            tools.move_input_file(file_name, dirs.ERR_DIR)
+
 
 def init():
     '''
