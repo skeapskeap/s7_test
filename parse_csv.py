@@ -1,11 +1,13 @@
 from datetime import datetime as dt
 from dirs import OS_SEP
 from tools import logger, MyLocalException
-import pandas as pd
+import csv
 import json
 
 
 class Parser():
+
+    expected_header = ['num', 'surname', 'firstname', 'bdate']
 
     def __init__(self, file_path: str):
         self.file_path = file_path
@@ -17,10 +19,9 @@ class Parser():
         Returns json data
         '''
         flt = self.parse_filename()
-        df = self.make_df()
+        passengers = self.csv_to_dict()
+        flt['prl'] = passengers
         try:
-            passengers = Parser.make_dict(df)
-            flt['prl'] = passengers
             json_data = json.dumps(flt)
             logger.info(f'{self.file_name}; Convert to json - OK')
             return json_data
@@ -28,40 +29,30 @@ class Parser():
             logger.error(f'{self.file_name}; Convert to json - Error')
             raise MyLocalException
 
-    def make_df(self):
+    def csv_to_dict(self) -> list:
         '''
         Expects abspath to .csv file
-        Returns pandas DataFrame
+        Returns list of dicts with passengers
         '''
-        try:
-            with open(self.file_path, 'r') as csv_file:
-                df = pd.read_csv(
-                    csv_file,
-                    sep=';',
-                    header=0)
-                df = df.applymap(str)
-            if not df.empty:
-                return df
-            logger.error(f'{self.file_name}; Empty table')
-            raise MyLocalException
+        with open(self.file_path, 'r') as csv_file:
+            reader = csv.DictReader(csv_file, delimiter=';')
+            header = reader.fieldnames
+            list_of_dicts = list(reader)
 
-        except FileNotFoundError:
-            logger.error(f"{self.file_path}; Can't open file")
-            raise MyLocalException
+            if not Parser.expected_header == header:
+                logger.error(f'{self.file_name}; Incorrect .csv')
+                raise MyLocalException
 
-        except pd.errors.EmptyDataError:
-            logger.error(f'{self.file_name}; Incorrect .csv')
-            raise MyLocalException
+            elif not list_of_dicts:
+                logger.error(f'{self.file_name}; Empty table')
+                raise MyLocalException
 
-    @staticmethod
-    def make_dict(df) -> dict:
-        '''
-        Expects pandas DataFrame
-        Returns python dict
-        '''
-        json_data = df.to_json(orient="table", index=False)
-        dict_data = json.loads(json_data)['data']
-        return dict_data
+            for item in list_of_dicts:
+                if None in item.values():
+                    logger.error(f'{self.file_name}; Invalid data in .csv')
+                    raise MyLocalException
+            
+        return list_of_dicts
 
     def parse_filename(self) -> dict:
         '''
