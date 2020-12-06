@@ -56,16 +56,16 @@ def init_dirs(*args):
             pass
 
 
-def save_json(json_data, filename):
+def save_json(json_data, file_name):
     '''
     Expects json data and its source filename
     Write json data to filename.json file
     '''
     try:
-        json_filename = filename.split('/')[-1].replace('.csv', '.json')
+        json_filename = file_name.replace('.csv', '.json')
         with open(dirs.OUTPUT_DIR + json_filename, 'w') as file:
             file.write(json_data)
-        logger.info(f"{filename}; Save to .json - OK")
+        logger.info(f"{file_name}; Save to .json - OK")
     except FileNotFoundError:
-        logger.error(f"{filename}; Can't save json file")
+        logger.error(f"{file_name}; Can't save json file")
         raise MyLocalException
