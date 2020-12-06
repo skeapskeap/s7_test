@@ -7,6 +7,7 @@ import shutil
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 logger = logging.getLogger()
 
+
 class MyLocalException(Exception):
     pass
 
@@ -17,14 +18,14 @@ def check_input_dir() -> list:
     Returns list of filenames
     '''
     try:
-        with os.scandir(dirs.INPUT_DIR) as content:  
+        with os.scandir(dirs.INPUT_DIR) as content:
             files = [item.name for item in content
-                        if item.is_file()]
+                     if item.is_file()]
             for file in files:
                 logger.info(f'{file}; New file detected in input directory')
         return files
     except FileNotFoundError:
-        logger.info(f"Can't open input directory")
+        logger.info("Can't open input directory")
         raise MyLocalException
 
 
