@@ -34,12 +34,12 @@ class Parser():
         Returns pandas DataFrame
         '''
         try:
-            df = pd.read_csv(
-                open(self.file_path, 'r'),
-                sep=';',
-                header=0)
-            df = df.applymap(str)
-
+            with open(self.file_path, 'r') as csv_file:
+                df = pd.read_csv(
+                    csv_file,
+                    sep=';',
+                    header=0)
+                df = df.applymap(str)
             if not df.empty:
                 return df
             logger.error(f'{self.file_name}; Empty table')
