@@ -60,10 +60,10 @@ def save_to_db(json_data):
     Commit changes
     '''
     data = json.loads(json_data)
-    flt=data['flt']
-    depdate=data['date']
+    flt = data['flt']
+    depdate = data['date']
     depdate = dt.strptime(depdate, '%Y-%m-%d')
-    dep=data['dep']
+    dep = data['dep']
 
     try:
         for person in data['prl']:
